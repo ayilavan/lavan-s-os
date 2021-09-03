@@ -1,17 +1,21 @@
-#include "drivers/frame_buffer.h"
-#include "drivers/serial_port.h"
-#include "segments/memory_segments.h"
+    #include "drivers/frame_buffer.h"
+    #include "drivers/serial_port.h"
+    #include "drivers/io.h"
+    #include "segments/segments.h"
+    #include "interrupts/interrupts.h"
+    #include "interrupts/keyboard.h"
+    #include "interrupts/pic.h"
+    
 
-/* The C function */
-int sum_of_three(int arg1, int arg2, int arg3)
-{
+    void kmain()
+    {
 
-segments_install_gdt();
-char buffer[] = "wel come";
+       //char arr[] = "Wel come";
+       //fb_move_cursor(6*80);
+       //fb_write(arr, 20);
+       //serial_write(arr, 20);
+       segments_install_gdt();
+       interrupts_install_idt();
 
-fb_write(buffer, 19);
-serial_write(0x3F8, buffer, 19);
+    }
 
-
-return arg1 + arg2 + arg3;
-}

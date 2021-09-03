@@ -3,3 +3,4 @@ default=0
 
     title  lavan-s-os
     kernel /boot/kernel.elf
+    module /modules/program

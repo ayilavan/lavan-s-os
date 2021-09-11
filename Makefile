@@ -1,7 +1,7 @@
-OBJECTS = loader.o kmain.o drivers/io/io.o drivers/frame_buffer/frame_buffer.o drivers/serial_port/serial_port.o memory/segmentation/gdt.o memory/segmentation/segments.o drivers/interrupts/keyboard.o drivers/interrupts/interrupt_handlers.o drivers/interrupts/interrupts.o drivers/interrupts/pic.o drivers/interrupts/idt.o utils/common/common.o memory/paging/paging.o memory/paging/paging_enable.o memory/heap/memory.o drivers/interrupts/isr.o
+    OBJECTS = loader.o kmain.o drivers/io/io.o drivers/frame_buffer/frame_buffer.o drivers/serial_port/serial_port.o memory/segmentation/gdt.o memory/segmentation/segments.o drivers/interrupts/keyboard.o drivers/interrupts/interrupt_handlers.o drivers/interrupts/interrupts.o drivers/interrupts/pic.o drivers/interrupts/idt.o utils/common/common.o memory/paging/paging.o memory/heap/kheap.o drivers/interrupts/isr.o utils/log.o
     CC = gcc
     CFLAGS = -m32 -nostdlib -fno-builtin -fno-stack-protector \
-         -Wno-unused -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c -masm=intel 
+         -Wno-unused -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c -masm=intel
     LDFLAGS = -T link.ld -melf_i386
     AS = nasm
     ASFLAGS = -f elf
@@ -11,7 +11,7 @@ OBJECTS = loader.o kmain.o drivers/io/io.o drivers/frame_buffer/frame_buffer.o d
     kernel.elf: $(OBJECTS)
 	ld $(LDFLAGS) $(OBJECTS) -o kernel.elf
 
-     lavan-s-os.iso: kernel.elf
+    o lavan-s-os.iso: kernel.elf
 	cp kernel.elf iso/boot/kernel.elf
 	genisoimage -R                              \
                     -b boot/grub/stage2_eltorito    \
@@ -21,12 +21,11 @@ OBJECTS = loader.o kmain.o drivers/io/io.o drivers/frame_buffer/frame_buffer.o d
                     -input-charset utf8             \
                     -quiet                          \
                     -boot-info-table                \
-                    -o lavan-s-os.iso                       \
+                    -o lavan-s-os.iso               \
                     iso
 
-    run:  lavan-s-os.iso
+    run: o lavan-s-os.iso
 	bochs -f bochsrc.txt -q
-	
 
     %.o: %.c
 	$(CC) $(CFLAGS)  $< -o $@
@@ -35,4 +34,4 @@ OBJECTS = loader.o kmain.o drivers/io/io.o drivers/frame_buffer/frame_buffer.o d
 	$(AS) $(ASFLAGS) $< -o $@
 
     clean:
-	rm -rf *.o kernel.elf  lavan-s-os.iso
+	rm -rf *.o kernel.elf o lavan-s-os.iso
